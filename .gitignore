@@ -122,3 +122,8 @@ Other/RoWikiGenerator/wwwroot/maps/
 Other/RoWikiGenerator/wwwroot/regions/
 Other/RebuildTests/
 Other/RoWikiGenerator/Microsoft.CodeAnalysis.Razor.Compiler/
+RebuildClient/.vscode/extensions.json
+RebuildClient/.vscode/launch.json
+RebuildClient/.vscode/settings.json
+RoRebuildServer/.vscode/launch.json
+RoRebuildServer/RoRebuildServer/RoRebuildServer.sln
