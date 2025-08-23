@@ -43,6 +43,26 @@ namespace Assets.Scripts.Sprites
     {
         public static ClientDataLoader Instance;
 
+        [SerializeField] private TextAsset MonsterClassData;
+        [SerializeField] private TextAsset PlayerClassData;
+        [SerializeField] private TextAsset PlayerHeadData;
+        [SerializeField] private TextAsset PlayerWeaponData;
+        [SerializeField] private TextAsset WeaponClassData;
+        [SerializeField] private TextAsset SkillData;
+        [SerializeField] private TextAsset SkillTreeData;
+        [SerializeField] private TextAsset MapViewpointData;
+        [SerializeField] private TextAsset UniqueAttackActionData;
+        [SerializeField] private TextAsset MetamorphResultData;
+        [SerializeField] private TextAsset ItemData;
+        [SerializeField] private TextAsset MapData;
+        [SerializeField] private TextAsset EquipmentSpriteData;
+        [SerializeField] private TextAsset ItemDescData;
+        [SerializeField] private TextAsset CardPrefixData;
+        [SerializeField] private TextAsset ServerVersionData;
+        [SerializeField] private TextAsset PatchNoteData;
+        [SerializeField] private TextAsset JobExpData;
+        [SerializeField] private TextAsset EmoteData;
+        [SerializeField] private TextAsset StatusEffectData;
         public SpriteAtlas ItemIconAtlas;
         public Sprite ShadowSprite;
 
@@ -71,27 +91,6 @@ namespace Assets.Scripts.Sprites
 
         private readonly List<string> validMonsterClasses = new();
         private readonly List<string> validMonsterCodes = new();
-        
-        private const string MonsterClassDataPath = "ClientConfigGenerated/monsterclass.json";
-        private const string PlayerClassDataPath = "ClientConfigGenerated/playerclass.json";
-        private const string PlayerHeadDataPath = "ClientConfig/headdata.json";
-        private const string PlayerWeaponDataPath = "ClientConfigGenerated/jobweaponinfo.json";
-        private const string WeaponClassDataPath = "ClientConfigGenerated/weaponclass.json";
-        private const string SkillDataPath = "ClientConfigGenerated/skillinfo.json";
-        private const string SkillTreeDataPath = "ClientConfigGenerated/skilltree.json";
-        private const string MapViewpointDataPath = "ClientConfig/MapViewpointList.txt";
-        private const string UniqueAttackActionDataPath = "ClientConfig/monsteractions.json";
-        private const string MetamorphResultDataPath = "ClientConfig/metamorph_actions.json";
-        private const string ItemDataPath = "ClientConfigGenerated/items.json";
-        private const string MapDataPath = "ClientConfigGenerated/maps.json";
-        private const string EquipmentSpriteDataPath = "ClientConfigGenerated/displaySpriteTable.txt";
-        private const string ItemDescDataPath = "ClientConfigGenerated/itemDescriptions.json";
-        private const string CardPrefixDataPath = "ClientConfigGenerated/cardprefixes.json";
-        private const string ServerVersionDataPath = "ClientConfigGenerated/ServerVersion.txt";
-        private const string PatchNoteDataPath = "ClientConfigGenerated/PatchNotes.txt";
-        private const string JobExpDataPath = "ClientConfigGenerated/jobexpchart.txt";
-        private const string EmoteDataPath = "ClientConfigGenerated/emotes.json";
-        private const string StatusEffectDataPath = "ClientConfigGenerated/statusinfo.json";
 
         public Sprite GetIconAtlasSprite(string name) => EffectSharedMaterialManager.GetAtlasSprite(ItemIconAtlas, name);
 
@@ -158,17 +157,15 @@ namespace Assets.Scripts.Sprites
             //Initialize();
         }
 
-        public static string ReadStreamingAssetFile(string file) => File.ReadAllText(Path.Combine(Application.streamingAssetsPath, file));
-
         public void Initialize()
         {
             if (isInitialized && Instance != null)
                 return;
             Instance = this;
 
-            ServerVersion = int.Parse(ReadStreamingAssetFile(ServerVersionDataPath));
+            ServerVersion = int.Parse(ServerVersionData.text);
 
-            using var jobStr = new StringReader(ReadStreamingAssetFile(JobExpDataPath));
+            using var jobStr = new StringReader(JobExpData.text);
             var jobLvl = 0;
             while (true)
             {
@@ -181,7 +178,7 @@ namespace Assets.Scripts.Sprites
                 jobLvl++;
             }
 
-            var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(ReadStreamingAssetFile(MonsterClassDataPath));
+            var entityData = JsonUtility.FromJson<Wrapper<MonsterClassData>>(MonsterClassData.text);
             foreach (var m in entityData.Items)
             {
                 monsterClassLookup.Add(m.Id, m);
@@ -189,7 +186,7 @@ namespace Assets.Scripts.Sprites
                 validMonsterCodes.Add(m.Code);
             }
 
-            var headData = JsonUtility.FromJson<Wrapper<PlayerHeadData>>(ReadStreamingAssetFile(PlayerHeadDataPath));
+            var headData = JsonUtility.FromJson<Wrapper<PlayerHeadData>>(PlayerHeadData.text);
             foreach (var h in headData.Items)
             {
                 //playerHeadLookup.Add(h.Id, h);
@@ -225,7 +222,7 @@ namespace Assets.Scripts.Sprites
             }
 
 
-            var playerData = JsonUtility.FromJson<Wrapper<PlayerClassData>>(ReadStreamingAssetFile(PlayerClassDataPath));
+            var playerData = JsonUtility.FromJson<Wrapper<PlayerClassData>>(PlayerClassData.text);
             foreach (var p in playerData.Items)
             {
                 playerClassLookup.Add(p.Id, p);
@@ -233,7 +230,7 @@ namespace Assets.Scripts.Sprites
             }
 
             //split weapon entries into a tree of base job -> weapon class -> sprite list
-            var weaponData = JsonUtility.FromJson<Wrapper<PlayerWeaponData>>(ReadStreamingAssetFile(PlayerWeaponDataPath));
+            var weaponData = JsonUtility.FromJson<Wrapper<PlayerWeaponData>>(PlayerWeaponData.text);
             foreach (var weapon in weaponData.Items)
             {
                 if (!playerWeaponLookup.ContainsKey(weapon.Job))
@@ -244,16 +241,16 @@ namespace Assets.Scripts.Sprites
                     jList.Add(weapon.Class, weapon);
             }
 
-            var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(ReadStreamingAssetFile(WeaponClassDataPath));
+            var weaponClass = JsonUtility.FromJson<Wrapper<WeaponClassData>>(WeaponClassData.text);
             foreach (var weapon in weaponClass.Items)
                 weaponClassData.TryAdd(weapon.Id, weapon);
 
-            var emoteData = JsonUtility.FromJson<Wrapper<EmoteData>>(ReadStreamingAssetFile(EmoteDataPath));
+            var emoteData = JsonUtility.FromJson<Wrapper<EmoteData>>(EmoteData.text);
             foreach (var emote in emoteData.Items)
                 if (!emoteDataTable.TryAdd(emote.Id, emote))
                     Debug.LogWarning($"Failed to add emote {emote.Id} to emote table");
 
-            var items = JsonUtility.FromJson<Wrapper<ItemData>>(ReadStreamingAssetFile(ItemDataPath));
+            var items = JsonUtility.FromJson<Wrapper<ItemData>>(ItemData.text);
 
             var itemIcons = new Dictionary<string, string>();
             foreach (var item in items.Items)
@@ -275,7 +272,7 @@ namespace Assets.Scripts.Sprites
                 Sprite = "Apple"
             });
 
-            foreach (var l in Regex.Split(ReadStreamingAssetFile(EquipmentSpriteDataPath), "\n|\r|\r\n"))
+            foreach (var l in Regex.Split(EquipmentSpriteData.text, "\n|\r|\r\n"))
             {
                 if (string.IsNullOrWhiteSpace(l))
                     continue;
@@ -284,7 +281,7 @@ namespace Assets.Scripts.Sprites
                 displaySpriteList.Add(l2[0], l2[1]);
             }
 
-            var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(ReadStreamingAssetFile(UniqueAttackActionDataPath));
+            var uniqueAttacks = JsonUtility.FromJson<Wrapper<UniqueAttackAction>>(UniqueAttackActionData.text);
             foreach (var action in uniqueAttacks.Items)
             {
                 if (!uniqueSpriteActions.TryGetValue(action.Sprite, out var list))
@@ -299,13 +296,13 @@ namespace Assets.Scripts.Sprites
                     Debug.LogWarning($"Could not convert {action.Action} to a skill type when parsing unique skill actions");
             }
 
-            var metamorphResults = JsonUtility.FromJson<Wrapper<MetamorphTransitionResult>>(ReadStreamingAssetFile(MetamorphResultDataPath));
+            var metamorphResults = JsonUtility.FromJson<Wrapper<MetamorphTransitionResult>>(MetamorphResultData.text);
             foreach (var result in metamorphResults.Items)
             {
                 metamorphTransitionResult.Add(result.Sprite, result);
             }
 
-            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(ReadStreamingAssetFile(SkillDataPath));
+            var skills = JsonUtility.FromJson<Wrapper<SkillData>>(SkillData.text);
             foreach (var skill in skills.Items)
             {
                 skill.Icon = "skill_" + skill.Icon;
@@ -315,15 +312,15 @@ namespace Assets.Scripts.Sprites
                 skillData.Add(skill.SkillId, skill);
             }
 
-            var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(ReadStreamingAssetFile(SkillTreeDataPath));
+            var trees = JsonUtility.FromJson<Wrapper<ClientSkillTree>>(SkillTreeData.text);
             foreach (var tree in trees.Items)
                 jobSkillTrees.Add(tree.ClassId, tree);
 
-            var prePosData = JsonUtility.FromJson<Wrapper<CardPrefixData>>(ReadStreamingAssetFile(CardPrefixDataPath));
+            var prePosData = JsonUtility.FromJson<Wrapper<CardPrefixData>>(CardPrefixData.text);
             foreach (var dat in prePosData.Items)
                 cardPrefixPostfixTable.Add(dat.Id, dat);
 
-            foreach (var mapDef in ReadStreamingAssetFile(MapViewpointDataPath).Split("\r\n"))
+            foreach (var mapDef in MapViewpointData.text.Split("\r\n"))
             {
                 var s = mapDef.Split(',');
                 if (s.Length < 9 || s[0] == "map")
@@ -343,19 +340,19 @@ namespace Assets.Scripts.Sprites
                 });
             }
 
-            var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(ReadStreamingAssetFile(MapDataPath));
+            var mapClass = JsonUtility.FromJson<Wrapper<ClientMapEntry>>(MapData.text);
             foreach (var map in mapClass.Items)
                 mapDataLookup.TryAdd(map.Code, map);
 
-            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(ReadStreamingAssetFile(StatusEffectDataPath));
+            var statusData = JsonUtility.FromJson<Wrapper<StatusEffectData>>(StatusEffectData.text);
             foreach (var status in statusData.Items)
                 statusEffectData.Add((int)status.StatusEffect, status);
 
-            var itemDescriptions = JsonUtility.FromJson<Wrapper<ItemDescription>>(ReadStreamingAssetFile(ItemDescDataPath));
+            var itemDescriptions = JsonUtility.FromJson<Wrapper<ItemDescription>>(ItemDescData.text);
             foreach (var desc in itemDescriptions.Items)
                 itemDescriptionTable.Add(desc.Code, desc.Description);
 
-            var notes = JsonUtility.FromJson<Wrapper<PatchNotes>>(ReadStreamingAssetFile(PatchNoteDataPath));
+            var notes = JsonUtility.FromJson<Wrapper<PatchNotes>>(PatchNoteData.text);
 
             var sb = new StringBuilder();
             //sb.AppendLine("<b>Changes</b>");

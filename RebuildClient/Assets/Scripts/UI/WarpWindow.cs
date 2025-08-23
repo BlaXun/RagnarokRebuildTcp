@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Assets.Scripts.Sprites;
 using Assets.Scripts.UI;
 using Assets.Scripts.Utility;
 using UnityEngine;
@@ -9,6 +7,7 @@ using UnityEngine.UI;
 
 public class WarpWindow : WindowBase
 {
+    public TextAsset WarpListFile;
     public GameObject InitialRowPrefab;
     public GameObject RowContainer;
 
@@ -47,7 +46,7 @@ public class WarpWindow : WindowBase
         if (isInitialized)
             return;
 
-        var text = ClientDataLoader.ReadStreamingAssetFile("ClientConfig/AdminWarpList.txt").Split("\r\n");
+        var text = WarpListFile.text.Split("\r\n");
         
         var rows = 0;
         //var width = 0f;
