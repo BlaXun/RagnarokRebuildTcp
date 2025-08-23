@@ -49,4 +49,4 @@ Rogue,Unarmed,0,2,3,,,,
 Alchemist,Unarmed,0,2,3,,,,
 Ninja,Unarmed,0,2,2,,,,
 Ninja,Dagger,0,2,2,Ninja_M_단검.spr,Ninja_M_단검_검광.spr,Ninja_F_단검.spr,Ninja_F_단검_검광.spr
-Ninja,Shuriken,0,2,3,Ninja_M_수리검.spr,Ninja_M_단검_검광.spr,Ninja_F_수리검.spr,Ninja_F_단검_검광.spr
+Ninja,Shuriken,0,3,3,Ninja_M_수리검.spr,Ninja_M_단검_검광.spr,Ninja_F_수리검.spr,Ninja_F_단검_검광.spr
