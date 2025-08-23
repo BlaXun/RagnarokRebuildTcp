@@ -100,11 +100,12 @@ internal class DataLoader
 
         var entries = csv.GetRecords<CsvExpChart>().ToList();
 
-        var chart = new ExpChart { ExpRequired = new int[100], JobExpRequired = new int[2 * 70] };
+        var AMOUNT_OF_CLASS_BRANCHES = 3; // Novice, FirstJob, ExpandedJob...so, 3
+        var chart = new ExpChart { ExpRequired = new int[100], JobExpRequired = new int[AMOUNT_OF_CLASS_BRANCHES * 70] };
 
         chart.ExpRequired[0] = 0; //should always be true but why not!
         chart.JobExpRequired[0] = -1;
-        chart.JobExpRequired[70] = -1;
+        chart.JobExpRequired[70] = -1;        
 
         foreach (var e in entries)
         {
