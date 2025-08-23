@@ -130,6 +130,7 @@ internal class DataLoader
                 continue;
             chart.JobExpRequired[e.JobLvl] = e.Novice;
             chart.JobExpRequired[70 + e.JobLvl] = e.FirstJob;
+            chart.JobExpRequired[140 + e.JobLvl] = e.ExpandedJob;
         }
 
         return chart;
