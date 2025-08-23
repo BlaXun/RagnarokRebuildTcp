@@ -1,5 +1,7 @@
 Thumbs.db
 .vs
+*.meta
+.idea
 RoRebuildOld/
 RoRebuild/RebuildZoneServer/log/profiler.csv
 RoRebuildServer/RoRebuildServer/.config/
