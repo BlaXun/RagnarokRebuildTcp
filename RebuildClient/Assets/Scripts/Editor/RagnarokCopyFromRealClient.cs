@@ -50,6 +50,7 @@ namespace Assets.Editor
             name = name.Replace("초보자_", "Novice_");
             name = name.Replace("검사_", "Swordsman_");
             name = name.Replace("도둑_", "Thief_");
+            name = name.Replace("닌자_", "Ninja_");
             name = name.Replace("여_", "F_");
             name = name.Replace("남_", "M_");
 
@@ -75,6 +76,8 @@ namespace Assets.Editor
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/도둑"), "Assets/Sprites/Weapons/Thief/", false, true, "*",
                 UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/닌자"), "Assets/Sprites/Weapons/Ninja/", false, true, "*",
+                UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/인간족/슈퍼노비스"), "Assets/Sprites/Weapons/SuperNovice/", false, true,
                 "*", UpdateSpriteName);
 
@@ -92,6 +95,8 @@ namespace Assets.Editor
             CopyFolder(Path.Combine(dataDir, "sprite/방패/검사"), "Assets/Sprites/Shields/Swordsman/", false, true, "*",
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/방패/도둑"), "Assets/Sprites/Shields/Thief/", false, true, "*",
+                UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/닌자"), "Assets/Sprites/Shields/Ninja/", false, true, "*",
                 UpdateSpriteName);
             CopyFolder(Path.Combine(dataDir, "sprite/방패/슈퍼노비스"), "Assets/Sprites/Shields/SuperNovice/", false, true,
                 "*", UpdateSpriteName);
@@ -277,6 +282,12 @@ namespace Assets.Editor
             CreateTemporarySpriteIfRequired("vagabond_wolf", "were_wolf");
             CreateTemporarySpriteIfRequired("frilldora", "raptice");
             CreateTemporarySpriteIfRequired("poison_spore", "deathspore");
+
+            //Ninja
+            CopyFolder(Path.Combine(dataDir, "sprite/인간족/닌자"), "Assets/Sprites/Weapons/Ninja/", false, true, "*",
+                UpdateSpriteName);
+            CopyFolder(Path.Combine(dataDir, "sprite/방패/닌자"), "Assets/Sprites/Shields/Ninja/", false, true, "*",
+                UpdateSpriteName);
 
             AssetDatabase.Refresh();
 
@@ -473,14 +484,14 @@ namespace Assets.Editor
                             var jobs = new[]
                             {
                                 "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스", "기사", "위저드", "프리스트", "헌터", "어세신",
-                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사_남"
+                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사_남", "닌자"
                             };
                             var outputs = new[]
                             {
                                 "Acolyte", "Archer", "Mage", "Merchant", "Novice", "Swordsman", "Thief", "SuperNovice",
                                 "Knight", "Wizard", "Priest", "Hunter", "Assassin", "Blacksmith", "Crusader", "Sage",
                                 "Bard", "Dancer", "Monk", "Rogue", "Alchemist", "GameMaster", "PecoCrusader",
-                                "PecoKnight"
+                                "PecoKnight","Ninja"
                             };
                             for (int i = 0; i < jobs.Length; i++)
                                 CopyFolder(Path.Combine(dataDir, $"sprite/인간족/{jobs[i]}/"),
@@ -488,7 +499,7 @@ namespace Assets.Editor
                                     (p) => p.Replace("성직자_", "Acolyte_").Replace("궁수_", "Archer_")
                                         .Replace("마법사_", "Mage_").Replace("상인_", "Merchant_").Replace("초보자_", "Novice_")
                                         .Replace("검사_", "Swordsman_").Replace("도둑_", "Thief_").Replace("여_", "F_")
-                                        .Replace("남_", "M_"));
+                                        .Replace("남_", "M_").Replace("닌자_","Ninja_"));
                         },
                         IsAlreadyImported = () =>
                             Directory.Exists("Assets/Sprites/Weapons") &&
@@ -502,14 +513,14 @@ namespace Assets.Editor
                             var jobs = new[]
                             {
                                 "성직자", "궁수", "마법사", "상인", "초보자", "검사", "도둑", "슈퍼노비스", "기사", "위저드", "프리스트", "헌터", "어세신",
-                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사_남"
+                                "제철공", "크루세이더", "세이지", "바드", "무희바지", "몽크", "로그", "연금술사", "운영자", "신페코크루세이더", "페코페코_기사_남","닌자"
                             };
                             var outputs = new[]
                             {
                                 "Acolyte", "Archer", "Mage", "Merchant", "Novice", "Swordsman", "Thief", "SuperNovice",
                                 "Knight", "Wizard", "Priest", "Hunter", "Assassin", "Blacksmith", "Crusader", "Sage",
                                 "Bard", "Dancer", "Monk", "Rogue", "Alchemist", "GameMaster", "PecoCrusader",
-                                "PecoKnight"
+                                "PecoKnight","Ninja"
                             };
                             for (int i = 0; i < jobs.Length; i++)
                                 CopyFolder(Path.Combine(dataDir, $"sprite/방패/{jobs[i]}/"),

@@ -246,7 +246,7 @@ internal class DataLoader
     {
         var lookup = new Dictionary<string, int>();
         foreach (var j in jobs)
-        {
+        {            
             lookup.Add(j.Value.Class, j.Key);
         }
 
@@ -482,7 +482,8 @@ internal class DataLoader
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
         var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
 
-        for (var i = 0; i < 7; i++)
+        var AMOUNT_OF_CLASSES = 8;
+        for (var i = 0; i < AMOUNT_OF_CLASSES; i++)
             dict.Add(i, new int[100]);
 
         foreach (var entry in entries)
@@ -493,8 +494,9 @@ internal class DataLoader
             dict[2][lvl] = entry.Archer;
             dict[3][lvl] = entry.Mage;
             dict[4][lvl] = entry.Acolyte;
-            dict[6][lvl] = entry.Merchant;
             dict[5][lvl] = entry.Thief;
+            dict[6][lvl] = entry.Merchant;
+            dict[7][lvl] = entry.Ninja;
         }
 
         return dict.AsReadOnly();
@@ -511,7 +513,8 @@ internal class DataLoader
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
         var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
 
-        for (var i = 0; i < 7; i++)
+        var AMOUNT_OF_CLASSES = 8;
+        for (var i = 0; i < AMOUNT_OF_CLASSES; i++)
             dict.Add(i, new int[100]);
 
         foreach (var entry in entries)
@@ -522,8 +525,9 @@ internal class DataLoader
             dict[2][lvl] = entry.Archer;
             dict[3][lvl] = entry.Mage;
             dict[4][lvl] = entry.Acolyte;
-            dict[6][lvl] = entry.Merchant;
             dict[5][lvl] = entry.Thief;
+            dict[6][lvl] = entry.Merchant;
+            dict[7][lvl] = entry.Ninja;
         }
 
         return dict.AsReadOnly();
@@ -821,17 +825,17 @@ internal class DataLoader
 
     public int[] LoadJobBonusTable()
     {
+        var AMOUNT_OF_STATS = 6;
+
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobStatBonuses.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
-
         var entries = csv.GetRecords<dynamic>().ToList();
 
-        Span<int> tempTable = stackalloc int[6];
+        Span<int> tempTable = stackalloc int[AMOUNT_OF_STATS];
 
         int maxJobs = entries.Count;
-
-        var fullBonusTable = new int[maxJobs * 70 * 6]; //70 levels for maxJobs jobs with 6 stats each level
+        var fullBonusTable = new int[maxJobs * 70 * AMOUNT_OF_STATS]; //70 levels for maxJobs jobs with 6 stats each level
 
         foreach (var entry in entries)
         {
@@ -860,8 +864,8 @@ internal class DataLoader
                         default: throw new Exception($"Unexpected stat value {stat} when loading job {jobName} on JobStatBonuses.csv!");
                     }
 
-                    var index = (jobId * 70 * 6) + (i - 1) * 6;
-                    var target = new Span<int>(fullBonusTable, index, 6);
+                    var index = (jobId * 70 * AMOUNT_OF_STATS) + (i - 1) * AMOUNT_OF_STATS;
+                    var target = new Span<int>(fullBonusTable, index, AMOUNT_OF_STATS);
                     tempTable.CopyTo(target);
                 }
             }
