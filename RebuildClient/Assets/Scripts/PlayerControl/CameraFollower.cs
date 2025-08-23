@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using Assets.Scripts.Effects;
 using Assets.Scripts.Effects.EffectHandlers;
@@ -304,7 +303,7 @@ namespace Assets.Scripts
 
             Physics.queriesHitBackfaces = true;
 
-            var effects = JsonUtility.FromJson<EffectTypeList>(ClientDataLoader.ReadStreamingAssetFile("ClientConfigGenerated/effects.json"));
+            var effects = JsonUtility.FromJson<EffectTypeList>(EffectConfigFile.text);
             EffectList = new Dictionary<int, EffectTypeEntry>();
             EffectIdLookup = new Dictionary<string, int>();
             EffectCache = new Dictionary<int, GameObject>();
@@ -320,7 +319,7 @@ namespace Assets.Scripts
                 EffectIdLookup.Add(e.Name, e.Id);
             }
 
-            var lines = ClientDataLoader.ReadStreamingAssetFile("ClientConfigGenerated/levelchart.txt").Split("\n"); //we'll trim out \r after if it exists
+            var lines = LevelChart.text.Split("\n"); //we'll trim out \r after if it exists
             for (var i = 0; i < 99; i++)
                 levelReqs[i] = int.Parse(lines[i].Trim());
 
