@@ -796,6 +796,18 @@ SpCost = [10,10,10,10,10]
 [MaximizePower]
 
 #----------------------------------
+# Ninja
+#----------------------------------
+
+[FreezingSpear]
+Name = "Freezing Spear"
+Icon = "nj_hyousensou"
+Target = "Enemy"
+MaxLevel = 10
+SpCost = [15,18,21,24,27,30,33,36,39,42]
+AdjustableLevel = true
+
+#----------------------------------
 # Other skills
 #----------------------------------
 

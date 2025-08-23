@@ -252,7 +252,7 @@ namespace Assets.Scripts.MapEditor.Editor
                 if (path.Contains("Imported/Weapons"))
                 {
                     if (!path.Contains("Novice") && !path.Contains("Swordsman") && !path.Contains("Mage") && !path.Contains("Acolyte") &&
-                        !path.Contains("Merchant") && !path.Contains("Thief") && !path.Contains("Archer"))
+                        !path.Contains("Merchant") && !path.Contains("Thief") && !path.Contains("Archer") && !path.Contains("Ninja"))
                     {
                         continue;
                     }

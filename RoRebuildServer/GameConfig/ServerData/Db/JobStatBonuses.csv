@@ -6,6 +6,7 @@ Mage,0,int,0,0,0,dex,0,0,0,dex,0,0,0,int,0,0,0,agi,0,0,0,int,0,0,0,agi,0,0,0,luk
 Merchant,0,vit,0,0,0,dex,0,0,0,str,0,0,0,dex,0,0,0,vit,0,0,0,str,0,0,0,int,0,0,0,vit,0,0,agi,0,0,luk,0,dex,0,str,0,dex,0,str,0,luk,vit,0,str,dex,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 Archer,0,dex,0,0,0,str,0,0,0,int,0,0,0,dex,0,0,0,dex,0,0,0,luk,0,0,0,agi,0,0,0,dex,0,0,agi,0,0,dex,0,str,0,str,0,dex,0,luk,0,vit,int,0,agi,dex,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 Thief,0,agi,0,0,0,str,0,0,0,dex,0,0,0,vit,0,0,0,int,0,0,0,dex,0,0,0,luk,0,0,0,str,0,0,agi,0,0,agi,0,str,0,luk,0,dex,0,vit,0,luk,str,0,dex,agi,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Ninja,agi,agi,0,0,0,0,0,0,0,dex,agi,0,0,0,0,0,0,0,0,int,agi,dex,0,0,0,0,0,0,int,luk,agi,dex,0,0,0,0,0,0,0,luk,agi,int,dex,0,0,0,0,0,0,int,agi,luk,dex,0,0,0,0,0,str,vit,agi,int,dex,luk,0,0,0,0,0,0
 Knight,vit,0,vit,str,luk,0,0,vit,0,str,dex,vit,agi,0,str,0,vit,vit,dex,luk,str,0,vit,0,0,0,str,luk,vit,0,dex,0,str,0,0,vit,luk,agi,0,dex,0,0,vit,0,0,str,str,dex,dex,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 Wizard,int,dex,0,int,dex,agi,0,0,int,agi,0,str,dex,0,luk,0,0,int,0,0,0,int,0,agi,0,dex,0,0,int,0,int,dex,int,agi,0,luk,0,vit,dex,int,agi,0,agi,0,int,agi,agi,int,0,int,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 Blacksmith,dex,0,str,dex,dex,0,vit,str,dex,0,luk,dex,vit,0,0,str,0,0,dex,vit,int,0,str,0,0,dex,0,dex,agi,0,str,vit,0,int,0,dex,vit,agi,dex,dex,0,0,0,str,0,luk,dex,0,vit,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0

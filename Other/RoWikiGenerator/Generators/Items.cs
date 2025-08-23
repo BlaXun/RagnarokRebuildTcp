@@ -569,6 +569,7 @@ public class Items
         categoryLookup.Add("Rod", "Rods");
         //categoryLookup.Add("2HRod", "Two-Handed Rods");
         categoryLookup.Add("Bow", "Bows");
+        categoryLookup.Add("Shuriken", "Huuma");
 
         //var itemList = new ItemDataList();
         //itemList.Items = new List<ItemData>();
@@ -630,6 +631,7 @@ public class Items
         itemsByCategory.Add("Mace", weapons.Where(w => w.weaponClass.Id == 8).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
         itemsByCategory.Add("Rod", weapons.Where(w => w.weaponClass.Id == 10 || w.weaponClass.Id == 11).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
         itemsByCategory.Add("Bow", weapons.Where(w => w.weaponClass.Id == 12).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
+        itemsByCategory.Add("Shuriken", weapons.Where(w => w.weaponClass.Id == 13).OrderBy(w => w.csvData.Rank).ThenBy(w => w.csvData.Attack).Select(w => (object)w).ToList());
 
 
         var itemModel = new ItemModel()

@@ -19,6 +19,7 @@ Archer,"Archer (Excluding Bard/Dancer)",Archer,ArcherHigh,Hunter
 ArcherGroup,"Archer",Archer,ArcherHigh,Hunter,Bard,Dancer
 Acolyte,"Acolyte",Acolyte,AcolyteHigh,Priest,Monk
 Thief,"Thief",Thief,ThiefHigh,Assassin,Rogue
+Ninja,"Ninja",Ninja
 KnightHigh,"Lord Knight",KnightHigh
 PriestHigh,"High Priest",PriestHigh
 WizardHigh,"High Wizard",WizardHigh

@@ -94,6 +94,12 @@ BackSlide = [["ImproveDodge",5]]
 SonicBlow = [["DoubleAttack", 5],["Envenom", 7]]
 EnchantPoison = [["Envenom", 10],["Hiding", 3]]
 
+[Ninja]
+JobRank = 1
+Extends = "Novice"
+[Ninja.SkillTree]
+FreezingSpear = []
+
 [Merchant]
 JobRank = 1
 Extends = "Novice"

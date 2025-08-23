@@ -47,10 +47,13 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
             case 3:
                 if (!p.IsAdmin)
                     return;
-                if (val >= 0 && val <= 6)
+                // Whenever new classes are added make sure to increase this to allow 
+                // changing to that class using the /change job [id] command
+                var CURRENT_MAX_ALLOWED_JOB_ID = 7;
+                if (val >= 0 && val <= CURRENT_MAX_ALLOWED_JOB_ID)
                     p.ChangeJob(val);
                 else
-                    p.ChangeJob(GameRandom.Next(0, 6));
+                    p.ChangeJob(GameRandom.Next(0, CURRENT_MAX_ALLOWED_JOB_ID));
                 return; //return as we don't want to double refresh (change job will refresh)
             //case 4:
             //    if (!p.IsAdmin)
