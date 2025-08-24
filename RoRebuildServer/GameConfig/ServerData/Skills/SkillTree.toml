@@ -58,7 +58,6 @@ EnergyCoat = [["FireBolt", 3], ["ColdBolt", 3], ["LightningBolt", 3]]
 JobRank = 1
 Extends = "Novice"
 [Acolyte.SkillTree]
-IncreaseSPRecovery = []
 DivineProtection = []
 DemonBane = [["DivineProtection", 1]]
 Heal = []
