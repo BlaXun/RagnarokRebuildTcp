@@ -129,3 +129,4 @@ RebuildClient/.vscode/launch.json
 RebuildClient/.vscode/settings.json
 RoRebuildServer/.vscode/launch.json
 RoRebuildServer/RoRebuildServer/RoRebuildServer.sln
+RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/
