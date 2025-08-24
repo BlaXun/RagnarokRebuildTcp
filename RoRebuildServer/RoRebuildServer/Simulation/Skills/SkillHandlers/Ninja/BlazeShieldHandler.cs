@@ -67,8 +67,9 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Ninja
                 }
             }
             
+            // TODO: Check if cooldown is applied
             if(!isIndirect)
-                source.ApplyCooldownForSupportSkillAction();
+                source.ApplyCooldownForSupportSkillAction(1.0f);
             
             var ch = source.Character;
             var map = ch.Map;
