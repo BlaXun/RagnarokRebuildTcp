@@ -11,6 +11,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
         public static void LaunchFreezingSpearEffect(ServerControllable target, int level) {
             AudioManager.Instance.OneShotSoundEffect(target.Id, $"ef_frostdiver2.ogg", target.transform.position);
 
+            // How many milliseconds the effect should be visible
             var duration = (60 * 3) + (level * 20);
             var effect = RagnarokEffectPool.Get3dEffect(EffectType.FreezingSpearHit);
             effect.SetDurationByFrames(duration);
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
 
             {
                 //spawn a new spike
-                var prim = effect.LaunchPrimitive(PrimitiveType.Spike3D, effect.Material, 4f);
+                var prim = effect.LaunchPrimitive(PrimitiveType.Spike3D, effect.Material,  (float) duration/ 100.0f);
                 var data = prim.GetPrimitiveData<Spike3DData>();
 
                 prim.transform.localPosition = new Vector3(0, -2f, 0);
@@ -40,21 +41,19 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                 data.Speed = 1f / 5f;
                 data.Acceleration = 0.01f;
                 data.Flags = Spike3DFlags.SpeedLimit | Spike3DFlags.ReturnDown;
-                data.StopStep = 15;
+                data.StopStep = 15; // At what step should the spike stop rising from the ground?
                 data.ChangeStep = 12;
                 data.ChangeSpeed = -1.2f / 5f;
                 data.ChangeAccel = 0;
-                data.ReturnStep = 210;
-                data.ReturnSpeed = -1.2f / 5f;
-                data.ReturnAccel = 0;
-                data.FadeOutLength = duration - 1.0f;
+                data.FadeOutLength = 0.2f; // When should the fade out begin? The higher the number the earlier it will begin (For example 0.3f makes fade out start when the lifetime has reached 70%)
+                
             }
 
             //secondary spikes
             for (var i = 0; i < 6; i++)
             {
                 //spawn a new spike
-                var prim = effect.LaunchPrimitive(PrimitiveType.Spike3D, effect.Material, 4f);
+                var prim = effect.LaunchPrimitive(PrimitiveType.Spike3D, effect.Material, duration / 100.0f);
                 var data = prim.GetPrimitiveData<Spike3DData>();
             
                 var dist = 3.5f / 5f;
@@ -72,7 +71,7 @@ namespace Assets.Scripts.Effects.EffectHandlers.Skills
                 data.Acceleration = 0f;
                 data.Flags = Spike3DFlags.SpeedLimit;
                 data.StopStep = 3;
-                data.FadeOutLength = duration - 1.0f;
+                data.FadeOutLength = 0.2f;
             }
         }
     }

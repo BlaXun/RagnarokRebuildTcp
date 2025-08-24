@@ -100,12 +100,11 @@ internal class DataLoader
 
         var entries = csv.GetRecords<CsvExpChart>().ToList();
 
-        var AMOUNT_OF_CLASS_BRANCHES = 3; // Novice, FirstJob, ExpandedJob...so, 3
-        var chart = new ExpChart { ExpRequired = new int[100], JobExpRequired = new int[AMOUNT_OF_CLASS_BRANCHES * 70] };
+        var chart = new ExpChart { ExpRequired = new int[100], JobExpRequired = new int[2 * 70] };
 
         chart.ExpRequired[0] = 0; //should always be true but why not!
         chart.JobExpRequired[0] = -1;
-        chart.JobExpRequired[70] = -1;        
+        chart.JobExpRequired[70] = -1;
 
         foreach (var e in entries)
         {
@@ -131,7 +130,6 @@ internal class DataLoader
                 continue;
             chart.JobExpRequired[e.JobLvl] = e.Novice;
             chart.JobExpRequired[70 + e.JobLvl] = e.FirstJob;
-            chart.JobExpRequired[140 + e.JobLvl] = e.ExpandedJob;
         }
 
         return chart;
@@ -248,7 +246,7 @@ internal class DataLoader
     {
         var lookup = new Dictionary<string, int>();
         foreach (var j in jobs)
-        {            
+        {
             lookup.Add(j.Value.Class, j.Key);
         }
 
@@ -301,18 +299,33 @@ internal class DataLoader
     {
         var path = Path.Combine(ServerConfig.DataConfig.DataPath, @"Skills/SkillTree.toml");
         var options = new TomlModelOptions() { ConvertPropertyName = name => name, ConvertFieldName = name => name, IncludeFields = true };
-        var skillTreeData = Toml.ToModel<Dictionary<string, PlayerSkillTree>>(File.ReadAllText(path, Encoding.UTF8), null, options);
+        var skillTreeData = Toml.ToModel<Dictionary<string, CsvPlayerSkillTree>>(File.ReadAllText(path, Encoding.UTF8), null, options);
         var extendList = new Dictionary<int, int>();
         var treeOut = new Dictionary<int, PlayerSkillTree>();
+        var parentList = new Dictionary<int, int>();
 
         foreach (var (id, tree) in skillTreeData)
         {
-            treeOut.Add(DataManager.JobIdLookup[id], tree);
+            var jobId = DataManager.JobIdLookup[id];
+
+            var treeData = tree.SkillTree;
+            if (treeData == null)
+                treeData = new();
+
+            treeOut.Add(jobId, new PlayerSkillTree()
+            {
+                JobId = jobId,
+                JobRank = tree.JobRank,
+
+                SkillTree = treeData
+            });
+
             if (tree.Extends != null)
-                extendList.Add(DataManager.JobIdLookup[id], DataManager.JobIdLookup[tree.Extends]); //save this so we can chase skill requirements from previous jobs
+                parentList.Add(jobId, DataManager.JobIdLookup[tree.Extends]);
         }
 
-        DataManager.JobExtendsList = extendList.AsReadOnly();
+        foreach (var (job, prereq) in parentList)
+            treeOut[job].Parent = treeOut[prereq];
 
         return treeOut.AsReadOnly();
     }
@@ -410,128 +423,58 @@ internal class DataLoader
 
             drops.Add(monster, data);
         }
-
-        //var entries = csv.GetRecords<dynamic>();
-        //foreach (var entry in entries)
-        //{
-        //    if (entry is IDictionary<string, object> obj)
-        //    {
-        //        var monster = ((string)obj["Monster"]).Replace(" ", "_").ToUpper();
-        //        var data = new MonsterDropData();
-
-        //        if (!DataManager.MonsterCodeLookup.ContainsKey(monster))
-        //            ServerLogger.LogWarning($"Item drops defined for monster {monster} but that monster could not be found.");
-
-        //        for (var i = 1; i <= 12; i++)
-        //        {
-        //            var key = $"Item{i}";
-        //            if (obj.ContainsKey(key))
-        //            {
-        //                var itemName = (string)obj[key];
-        //                if (string.IsNullOrWhiteSpace(itemName))
-        //                    continue;
-
-        //                var rangeMin = 1;
-        //                var rangeMax = 1;
-        //                if (itemName.Contains("#"))
-        //                {
-        //                    var countSection = itemName.AsSpan(itemName.IndexOf('#') + 1);
-        //                    if (countSection.Contains('-'))
-        //                    {
-        //                        rangeMin = int.Parse(countSection[..countSection.IndexOf('-')]);
-        //                        rangeMax = int.Parse(countSection[(countSection.IndexOf('-') + 1)..]);
-        //                    }
-
-        //                    itemName = itemName.Substring(0, itemName.IndexOf('#'));
-        //                }
-
-        //                if (!DataManager.ItemIdByName.TryGetValue(itemName, out var item))
-        //                {
-        //                    ServerLogger.LogWarning($"Monster {monster} dropped item {itemName} was not found in the item list.");
-        //                    //continue;
-        //                }
-
-        //                var chance = (int)int.Parse((string)obj[$"Chance{i}"]);
-        //                if (chance <= 0)
-        //                    continue;
-
-        //                if (remapDrops)
-        //                {
-        //                    var itemInfo = DataManager.GetItemInfoById(item);
-        //                    if (itemInfo != null)
-        //                        chance = config.UpdateDropData(itemInfo.ItemClass, itemInfo.Code, itemInfo.SubCategory, chance);
-        //                }
-
-        //                if (item > 0) //for debug reasons mostly
-        //                    data.DropChances.Add(new MonsterDropData.MonsterDropEntry(item, chance, rangeMin, rangeMax));
-        //            }
-        //        }
-
-        //        drops.Add(monster, data);
-        //    }
-        //}
-
+        
         return drops.AsReadOnly();
     }
 
-    public ReadOnlyDictionary<int, int[]> LoadMaxHpChart()
+    private ReadOnlyDictionary<int, int[]> ReadHpSpChart(string path)
     {
         var dict = new Dictionary<int, int[]>();
-
-        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobHpChart.csv");
+        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, path);
 
         using var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-        var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
 
-        var AMOUNT_OF_CLASSES = 8;
-        for (var i = 0; i < AMOUNT_OF_CLASSES; i++)
-            dict.Add(i, new int[100]);
+        foreach (var job in DataManager.JobInfo)
+            dict[job.Key] = new int[100];
 
-        foreach (var entry in entries)
+        csv.Read();
+        csv.ReadHeader();
+
+        if (csv.HeaderRecord == null)
+            throw new Exception($"Could not read header on csv {path}!");
+
+        var headers = csv.HeaderRecord;
+        var jobList = new Dictionary<int, int>();
+        var colCount = 1;
+        foreach (var header in headers)
         {
-            var lvl = entry.Level;
-            dict[0][lvl] = entry.Novice;
-            dict[1][lvl] = entry.Swordsman;
-            dict[2][lvl] = entry.Archer;
-            dict[3][lvl] = entry.Mage;
-            dict[4][lvl] = entry.Acolyte;
-            dict[5][lvl] = entry.Thief;
-            dict[6][lvl] = entry.Merchant;
-            dict[7][lvl] = entry.Ninja;
+            if (header == "Level")
+                continue;
+            if (DataManager.JobIdLookup.TryGetValue(header, out var jobId))
+                jobList.Add(colCount, jobId);
+            colCount++;
+        }
+
+        while (csv.Read())
+        {
+            var lvl = csv.GetField<int>("Level");
+            foreach (var (col, job) in jobList)
+                dict[job][lvl] = csv.GetField<int>(col);
         }
 
         return dict.AsReadOnly();
     }
 
+    public ReadOnlyDictionary<int, int[]> LoadMaxHpChart()
+    {
+        var dict = ReadHpSpChart(@"Db/JobHpChart.csv");
+        return dict.AsReadOnly();
+    }
 
     public ReadOnlyDictionary<int, int[]> LoadMaxSpChart()
     {
-        var dict = new Dictionary<int, int[]>();
-
-        var inPath = Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobSpChart.csv");
-
-        using var tr = new StreamReader(inPath, Encoding.UTF8) as TextReader;
-        using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
-        var entries = csv.GetRecords<CsvJobMaxHp>().ToList();
-
-        var AMOUNT_OF_CLASSES = 8;
-        for (var i = 0; i < AMOUNT_OF_CLASSES; i++)
-            dict.Add(i, new int[100]);
-
-        foreach (var entry in entries)
-        {
-            var lvl = entry.Level;
-            dict[0][lvl] = entry.Novice;
-            dict[1][lvl] = entry.Swordsman;
-            dict[2][lvl] = entry.Archer;
-            dict[3][lvl] = entry.Mage;
-            dict[4][lvl] = entry.Acolyte;
-            dict[5][lvl] = entry.Thief;
-            dict[6][lvl] = entry.Merchant;
-            dict[7][lvl] = entry.Ninja;
-        }
-
+        var dict = ReadHpSpChart(@"Db/JobSpChart.csv");
         return dict.AsReadOnly();
     }
 
@@ -827,16 +770,17 @@ internal class DataLoader
 
     public int[] LoadJobBonusTable()
     {
-        var AMOUNT_OF_STATS = 6;
-
         using var tr = new StreamReader(Path.Combine(ServerConfig.DataConfig.DataPath, @"Db/JobStatBonuses.csv")) as TextReader;
         using var csv = new CsvReader(tr, CultureInfo.InvariantCulture);
 
+
+        int AMOUNT_OF_STATS = 6;
         var entries = csv.GetRecords<dynamic>().ToList();
 
         Span<int> tempTable = stackalloc int[AMOUNT_OF_STATS];
 
         int maxJobs = entries.Count;
+
         var fullBonusTable = new int[maxJobs * 70 * AMOUNT_OF_STATS]; //70 levels for maxJobs jobs with 6 stats each level
 
         foreach (var entry in entries)
@@ -866,7 +810,7 @@ internal class DataLoader
                         default: throw new Exception($"Unexpected stat value {stat} when loading job {jobName} on JobStatBonuses.csv!");
                     }
 
-                    var index = (jobId * 70 * AMOUNT_OF_STATS) + (i - 1) * AMOUNT_OF_STATS;
+                    var index = (jobId * 70 * 6) + (i - 1) * AMOUNT_OF_STATS;
                     var target = new Span<int>(fullBonusTable, index, AMOUNT_OF_STATS);
                     tempTable.CopyTo(target);
                 }
@@ -975,7 +919,7 @@ internal class DataLoader
                         lastTag++;
                     }
                 }
-                
+
             }
 
             obj.Add(new MonsterDatabaseInfo()

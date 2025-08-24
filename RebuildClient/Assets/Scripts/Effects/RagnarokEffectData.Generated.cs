@@ -38,6 +38,7 @@ namespace Assets.Scripts.Effects
 		EnchantPoison,
 		Endure,
 		Fireball,
+		FreezingSpearHit,
 		FrostDiverHit,
 		FrostDiverTrail,
 		MagnumBreak,

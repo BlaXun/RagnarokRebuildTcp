@@ -510,6 +510,11 @@ public class WorldObject : IEntityAutoReset
         }
     }
 
+    /**
+     * Prevents the instance from moving for the given amount of delay
+     * Attention! This will also ignore effects such as endure and will also
+     * work on bosses!
+     */
     public bool AddMoveLockTime(float delay, bool force = false)
     {
         Debug.Assert(Map != null);
@@ -540,11 +545,14 @@ public class WorldObject : IEntityAutoReset
         if (Type == CharacterType.NPC && OverrideAppearanceState != null)
             OverrideAppearanceState.HeadFacing = HeadFacing.Center;
 
-
         if (Type == CharacterType.Player)
             player.HeadFacing = HeadFacing.Center; //don't need to send this to client, they will assume it resets
     }
 
+    /**
+     * Returns wether the instance is currently able to move
+     * Takes the different states (Sitting, Dead, ..) into account for this
+     */
     public bool CanMove()
     {
         if (State == CharacterState.Sitting || State == CharacterState.Dead)

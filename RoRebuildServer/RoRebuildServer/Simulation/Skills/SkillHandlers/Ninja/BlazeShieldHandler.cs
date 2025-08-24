@@ -42,7 +42,7 @@ namespace RoRebuildServer.Simulation.Skills.SkillHandlers.Ninja
             if (target != null)  {
                 position = target.Character.Position;
             }
-
+            
             // Blaze Shield checks for catalyst item only after the casting itself is done
             // Make sure to consume the catalyst item, if it can't be consumed we end here
             if (!isIndirect && !isItemSource) {
@@ -211,15 +211,24 @@ public class BlazeShieldObjectEvent : NpcBehaviorBase {
 
             // The higher the stronger the hitlock. But 0.05f seem to be the sweetspot?
             var hitLock = 0.05f;
-            target.SetSkillDamageCooldown(CharacterSkill.BlazeShield, hitLock); //make it so they can't get hit by firewall again this frame
+            // Doddler claims its 100ms
+            //var hitLock = 0.1f;
+            target.SetSkillDamageCooldown(CharacterSkill.BlazeShield, hitLock); //make it so they can't get hit by blazeshield again for 100ms
             src.ExecuteCombatResult(res, false);
+
+            // We are forcing a move lock on the target (this should also hinder stalactics with endure from moving)
+            // However, we will not force HitLock bosses
+            if (target.GetSpecialType() != CharacterSpecialType.Boss) {
+                // Prevent enemy from moving for 100ms
+                target.Character.AddMoveLockTime(0.1f);
+            }
         }
 
         DoAttack();
         
-        // Add a 2nd hit for targets under endure or boss monsters
+        // Add a 2nd hit for boss monsters as they will walk through the field like it was nothing
         // This is supposed to help simulate the behavior from official servers
-        if ((target.GetSpecialType() == CharacterSpecialType.Boss && npc.ValuesInt[0] > 0) || target.HasStatusEffectOfType(CharacterStatusEffect.Endure))
+        if ((target.GetSpecialType() == CharacterSpecialType.Boss && npc.ValuesInt[0] > 0))
             DoAttack(0); 
     }
 }
