@@ -99,6 +99,7 @@ JobRank = 1
 Extends = "Novice"
 [Ninja.SkillTree]
 FreezingSpear = []
+BlazeShield = []
 
 [Merchant]
 JobRank = 1

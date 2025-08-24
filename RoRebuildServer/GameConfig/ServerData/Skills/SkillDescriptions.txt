@@ -254,7 +254,11 @@ Immediately jump backwards 5 tiles, based on the direction you're currently faci
 
 ::FreezingSpear
 Summons icy spears to strike a single target multiple times, where each spear will inflict 70% Water property magic damage.
-Cast Time: [0.7 * SkillLevel]s
+Cast Time: [0.7 * SkillLevel] seconds.
+
+::BlazeShield
+Summons a blazing storm around the caster that will deliver multiple strikes to enemies within its area of effect, each inflicting 50% Fire property magic damage. The next cast of this skill will override the previous one if it's still active. Each cast consumes a Flame Stone.
+Cast Time: [6.0 - (0.5 * SkillLevel)] seconds.
 
 //----------------Merchant-------------------
 

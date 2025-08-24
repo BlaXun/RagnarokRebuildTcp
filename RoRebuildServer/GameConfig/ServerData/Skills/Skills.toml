@@ -807,6 +807,14 @@ MaxLevel = 10
 SpCost = [15,18,21,24,27,30,33,36,39,42]
 AdjustableLevel = true
 
+[BlazeShield]
+Name = "Blaze Shield"
+Icon = "nj_bakuenryu"
+Target = "Self"
+MaxLevel = 10
+SpCost = [25]
+AdjustableLevel = false
+
 #----------------------------------
 # Other skills
 #----------------------------------

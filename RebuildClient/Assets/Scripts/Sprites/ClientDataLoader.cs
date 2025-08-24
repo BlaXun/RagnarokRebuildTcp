@@ -855,6 +855,17 @@ namespace Assets.Scripts.Sprites
                 case NpcEffectType.Firewall:
                     CameraFollower.Instance.AttachEffectToEntity("FirewallEffect", obj);
                     break;
+                case NpcEffectType.BlazeShield:
+                    // TODO: The offset might be causing a depth issue. Maybe I could solve that by adding a localPosition multiplier?
+                    var fire = RoSpriteEffect.AttachSprite(control, "Assets/Sprites/Effects/화염진.spr", 0.0f, 0.75f, RoSpriteEffectFlags.None);
+                    control.gameObject.transform.localScale = new Vector3(1.35f, 1.35f, 1.35f);
+                    //control.gameObject.transform.localPosition *= new Vector3(1f,1.25f,1f);
+                    fire.SetDurationByFrames(9999);
+                    //AudioManager.Instance.OneShotSoundEffect(control.Id, $"ef_firewall.ogg", control.transform.position);
+                    control.AttachEffect(fire);
+                    
+                    //CameraFollower.Instance.AttachEffectToEntity("BlazeShieldEffect", obj);
+                    break;
                 case NpcEffectType.Pneuma:
                     CameraFollower.Instance.AttachEffectToEntity("Pneuma1", obj);
                     // var go = new GameObject("PneumaArea");
