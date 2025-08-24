@@ -388,6 +388,21 @@ public class WorldObject : IEntityAutoReset
 
         return count;
     }
+    
+    // Returns a list of all events of the given type that are registerd for the given WorldObject
+    public List<Npc> ListEventsOfType(string eventType)
+    {
+        var events = new List<Npc>();
+        if (Events == null)
+            return events;
+
+        foreach (var e in Events)  {
+            if(e.TryGet<Npc>(out var npc) && npc.EventType == eventType)
+                events.Add(npc);
+        }
+
+        return events;
+    }
 
     public void OnDeathCleanupEvents()
     {
