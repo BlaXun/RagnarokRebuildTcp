@@ -49,7 +49,7 @@ public class PacketAdminChangeAppearance : IClientPacketHandler
                     return;
                 // Whenever new classes are added make sure to increase this to allow 
                 // changing to that class using the /change job [id] command
-                var CURRENT_MAX_ALLOWED_JOB_ID = 7;
+                var CURRENT_MAX_ALLOWED_JOB_ID = 21;
                 if (val >= 0 && val <= CURRENT_MAX_ALLOWED_JOB_ID)
                     p.ChangeJob(val);
                 else
