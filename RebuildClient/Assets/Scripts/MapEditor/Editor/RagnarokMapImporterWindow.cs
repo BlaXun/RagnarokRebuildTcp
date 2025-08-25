@@ -344,8 +344,18 @@ namespace Assets.Scripts.MapEditor.Editor
                     continue;
                 }
 
+                Debug.Log("guids[i]");
+                Debug.Log(guids[i]);
+                
+                Debug.Log("mapGroup");
+                Debug.Log(mapGroup);
                 var entry = settings.CreateOrMoveEntry(guids[i], mapGroup, readOnly: false, postEvent: false);
                 //Debug.Log(AssetDatabase.GUIDToAssetPath(guids[i]));
+                
+                Debug.Log("path");
+                Debug.Log(path);
+                Debug.Log("Entry");
+                Debug.Log(entry);
                 entry.address = path;
                 entry.labels.Add("Maps");
 
