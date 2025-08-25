@@ -1,3 +1,4 @@
+*.asset
 Thumbs.db
 .vs
 RoRebuildOld/
@@ -123,3 +124,19 @@ Other/RoWikiGenerator/wwwroot/regions/
 Other/RebuildTests/
 Other/RoWikiGenerator/Microsoft.CodeAnalysis.Razor.Compiler/
 RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/
+RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/*.json
+RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/*.txt
+RebuildClient/Assets/Test/
+RebuildClient/.vscode/
+RebuildClient/RoRebuildServer/.idea/.idea.RoRebuildServer.dir/.idea/*.*
+RebuildClient/Assets/Data/GameConfig.dll
+RebuildClient/Assets/Data/RebuildSharedData.dll
+RebuildClient/Assets/Data/SharedItemIcons.txt
+RebuildClient/Assets/Textures/*.*
+RebuildClient/Assets/Textures/Resources/*.*
+RebuildClient/Assets/Textures/Import/*.*
+*.gitignore
+RoRebuildServer/RoRebuildServer/.idea/.idea.RoRebuildServer.dir/.idea/encodings.xml
+RoRebuildServer/RoRebuildServer/.idea/.idea.RoRebuildServer.dir/.idea/indexLayout.xml
+RoRebuildServer/RoRebuildServer/.idea/.idea.RoRebuildServer.dir/.idea/vcs.xml
+RebuildClient/ProjectSettings/Packages/com.unity.probuilder/Settings.json
