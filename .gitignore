@@ -127,3 +127,12 @@ RebuildClient/.vscode/launch.json
 RebuildClient/.vscode/settings.json
 RoRebuildServer/.vscode/launch.json
 RoRebuildServer/RoRebuildServer/RoRebuildServer.sln
+.idea/encodings.xml
+.idea/indexLayout.xml
+.idea/projectSettingsUpdater.xml
+.idea/vcs.xml
+.idea/workspace.xml
+RebuildClient/Assets/StreamingAssets/ClientConfigGenerated/
+RoRebuildServer/RoRebuildServer/.idea/
+*.cs.meta
+*.meta
